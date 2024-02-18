@@ -4,3 +4,4 @@
 # Created upon running the program
 .deps/
 outfile.*
+*.c.o

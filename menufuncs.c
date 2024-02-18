@@ -4,11 +4,15 @@
 #include <stdint.h>  /* Declarations of uint_32 and the like */
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 
-int getbtns(void)
-{
-  return ((PORTD & 0xe0) >> 5);
-}
+// Declaration of functions
+int getbtns(void);
+void display_clear();
+void instructions();
 
+/*
+  MENU FUNCTIONS
+*/
+// Main menu
 void main_menu()
 {
   // Displays main menu
@@ -24,25 +28,16 @@ void main_menu()
 
   // Converts input to int -> to use with switch-case
   if (button & 4)
-  {
     choice = 1;
-  }
   else if (button & 2)
-  {
     choice = 2;
-  }
   else if (button & 1)
-  {
     choice = 3;
-  }
 
   int timer = 1000;
   switch (choice)
   {
-    display_string(0, "");
-    display_string(1, "");
-    display_string(2, "");
-    display_string(3, "");
+    display_clear();
 
   // 1. Instructions
   case 1:
@@ -58,7 +53,6 @@ void main_menu()
   case 2:
     while (timer != 0)
     {
-
       display_string(2, "Play game");
       display_update();
       timer--;
@@ -69,7 +63,6 @@ void main_menu()
   case 3:
     while (timer != 0)
     {
-
       display_string(3, "High scores");
       display_update();
       timer--;
@@ -79,4 +72,25 @@ void main_menu()
   default:
     break;
   }
+}
+
+void instructions()
+{
+  int button = getbtns();
+}
+
+/*
+  HELPER FUNCTIONS
+*/
+int getbtns(void)
+{
+  return ((PORTD & 0xe0) >> 5);
+}
+
+void display_clear()
+{
+  display_string(0, "");
+  display_string(1, "");
+  display_string(2, "");
+  display_string(3, "");
 }
