@@ -1,4 +1,4 @@
-// projectfunc.c
+// menufuncs.c
 // This file written 2024 by S Carlsson and E Lindblom
 
 #include <stdint.h>  /* Declarations of uint_32 and the like */
@@ -77,20 +77,4 @@ void main_menu()
 void instructions()
 {
   int button = getbtns();
-}
-
-/*
-  HELPER FUNCTIONS
-*/
-int getbtns(void)
-{
-  return ((PORTD & 0xe0) >> 5);
-}
-
-void display_clear()
-{
-  display_string(0, "");
-  display_string(1, "");
-  display_string(2, "");
-  display_string(3, "");
 }

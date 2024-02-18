@@ -30,14 +30,17 @@ static void num32asc(char *s, int);
 void quicksleep(int cyc)
 {
 	int i;
-	for (i = cyc; i > 0; i--);
+	for (i = cyc; i > 0; i--)
+		;
 }
 
 uint8_t spi_send_recv(uint8_t data)
 {
-	while (!(SPI2STAT & 0x08));
+	while (!(SPI2STAT & 0x08))
+		;
 	SPI2BUF = data;
-	while (!(SPI2STAT & 1));
+	while (!(SPI2STAT & 1))
+		;
 	return SPI2BUF;
 }
 
@@ -136,6 +139,14 @@ void display_update(void)
 				spi_send_recv(font[c * 8 + k]);
 		}
 	}
+}
+
+void display_clear()
+{
+	display_string(0, "");
+	display_string(1, "");
+	display_string(2, "");
+	display_string(3, "");
 }
 
 /* Helper function, local to this file.
