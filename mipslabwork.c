@@ -23,11 +23,6 @@ void user_isr(void)
 /* Project-specific initialization goes here */
 void projectinit(void)
 {
-  display_string(0, "Testing");
-  display_string(1, "Func from init");
-  display_string(2, "Woho");
-  display_string(3, "KTH rules");
-  display_update();
   return;
 }
 

@@ -1,1 +1,6 @@
+# .gitignore
+# This file written 2024 by S Carlsson and E Lindblom
+
+# Created upon running the program
 .deps/
+outfile.*

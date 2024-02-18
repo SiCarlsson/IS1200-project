@@ -9,7 +9,7 @@
 
 #include <stdint.h>	 /* Declarations of uint_32 and the like */
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
-#include "mipslab.h" /* Declatations for these labs */
+#include "mipslab.h"  /* Declatations for these labs */
 
 int main(void)
 {
@@ -58,6 +58,7 @@ is running at 80 MHz. Changed 2017, as recommended by Axel.
 	SPI2CONSET = 0x8000;
 
 	display_init();
+	// display_update(); // Clears screen
 
 	/* Do any project-specific initialization */
 	projectinit();
@@ -65,7 +66,11 @@ is running at 80 MHz. Changed 2017, as recommended by Axel.
 	// Endless loop
 	while (1)
 	{
-		projectwork();
+		// Starter menu
+		main_menu();
+
+
+
 	}
 	return 0;
 }
