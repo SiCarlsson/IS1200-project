@@ -1,3 +1,3 @@
 # IS1200-project
 
-hej
+Utgångspunkt för projektet: Labb 3, time4int
