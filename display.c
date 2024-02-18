@@ -141,12 +141,29 @@ void display_update(void)
 	}
 }
 
+/*
+	Helper function to clear all strings of text on display
+*/
 void display_clear()
 {
 	display_string(0, "");
 	display_string(1, "");
 	display_string(2, "");
 	display_string(3, "");
+}
+
+/*
+	Helper function to display four lines of text
+*/
+void display_string_array(char *stringArray[], int arraySize)
+{
+	int i = 0;
+	while (i < arraySize)
+	{
+		display_string(i, stringArray[i]);
+		i++;
+	}
+	display_update();
 }
 
 /* Helper function, local to this file.

@@ -15,12 +15,11 @@ void instructions();
 // Main menu
 void main_menu()
 {
+  display_clear();
+
   // Displays main menu
-  display_string(0, "Main menu");
-  display_string(1, "1. Instructions");
-  display_string(2, "2. Play game");
-  display_string(3, "3. High scores");
-  display_update();
+  char *menu[] = {"Main menu", "1. Instructions", "2. Play game", "3. High scores"};
+  display_string_array(menu, 4);
 
   // Gets input 4 to 2
   int choice = 0;
