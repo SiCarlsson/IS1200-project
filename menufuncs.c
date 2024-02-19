@@ -17,13 +17,14 @@ void main_menu()
 {
   display_clear();
 
+  // Gets input 4 to 2
+  int choice = 0;
+  int button = getbtns();
+  
   // Displays main menu
   char *menu[] = {"Main menu", "1. Instructions", "2. Play game", "3. High scores"};
   display_string_array(menu, 4);
 
-  // Gets input 4 to 2
-  int choice = 0;
-  int button = getbtns();
 
   // Converts input to int -> to use with switch-case
   if (button & 4)
@@ -40,12 +41,7 @@ void main_menu()
 
   // 1. Instructions
   case 1:
-    while (timer != 0)
-    {
-      display_string(1, "Instructions");
-      display_update();
-      timer--;
-    }
+    instructions();
     break;
 
   // 2. Play game
@@ -75,5 +71,18 @@ void main_menu()
 
 void instructions()
 {
-  int button = getbtns();
+  char *instructions[] = {"Instructions", "BTN4: Jump", "BTN3: Go left", "BTN2: Go right"};
+  display_string_array(instructions, 4);
+
+  int button;
+
+  // Keeps the user on the instructions page untill BTN4 is pressed
+  while (1)
+  {
+    button = getbtns();
+    if (button & 2)
+    {
+      break;
+    }
+  }
 }
