@@ -20,11 +20,10 @@ void main_menu()
   // Gets input 4 to 2
   int choice = 0;
   int button = getbtns();
-  
+
   // Displays main menu
   char *menu[] = {"Main menu", "1. Instructions", "2. Play game", "3. High scores"};
   display_string_array(menu, 4);
-
 
   // Converts input to int -> to use with switch-case
   if (button & 4)
@@ -71,18 +70,48 @@ void main_menu()
 
 void instructions()
 {
-  char *instructions[] = {"Instructions", "BTN4: Jump", "BTN3: Go left", "BTN2: Go right"};
-  display_string_array(instructions, 4);
+  char *instructions1[] = {"Manual, p.1", "BTN4: Prev. page", "BTN3: Main menu", "BTN2: Next page"};
+  char *instructions2[] = {"Manual, p.2", "BTN4: Jump", "BTN3: Go left", "BTN2: Go right"};
+  char *instructions3[] = {"Manual, p.3", "Each obstacle", "equals one", "point"};
+  char *instructions4[] = {"Manual, p.4", "Game over", "when you hit", "an obstacle"};
+  char *instructions5[] = {"Manual, p.5", "That's it!", "Go back to", "the main manu"};
 
-  int button;
+  // Keeps track of the page
+  int page = 1;
 
   // Keeps the user on the instructions page untill BTN4 is pressed
   while (1)
   {
-    button = getbtns();
+    int button = getbtns();
+
+    if (page == 1)
+      display_string_array(instructions1, 4);
+
+    else if (page == 2)
+      display_string_array(instructions2, 4);
+
+    else if (page == 3)
+      display_string_array(instructions3, 4);
+
+    else if (page == 4)
+      display_string_array(instructions4, 4);
+
+    else if (page == 5)
+      display_string_array(instructions5, 4);
+
+    // Goes to prev page if not already on page 1
+    if (button & 4)
+      if (page != 1)
+        page = (page - 1);
+
+    // Break the loop (back to main menu)
     if (button & 2)
-    {
       break;
-    }
+
+    if (button & 1)
+      if (page != 5)
+        page = (page + 1);
+
+    quicksleep(750000);
   }
 }

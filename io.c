@@ -1,4 +1,4 @@
-// helperfuncs.c
+// io.c
 // This file written 2024 by S Carlsson and E Lindblom
 
 #include <stdint.h>  /* Declarations of uint_32 and the like */
@@ -7,4 +7,8 @@
 int getbtns(void)
 {
   return ((PORTD & 0xe0) >> 5);
+}
+
+int getsw ( void ) {
+    return (PORTD & 0x0f00) >> 8;
 }

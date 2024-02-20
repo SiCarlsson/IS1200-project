@@ -30,8 +30,7 @@ static void num32asc(char *s, int);
 void quicksleep(int cyc)
 {
 	int i;
-	for (i = cyc; i > 0; i--)
-		;
+	for (i = cyc; i > 0; i--);
 }
 
 uint8_t spi_send_recv(uint8_t data)
@@ -157,6 +156,9 @@ void display_clear()
 */
 void display_string_array(char *stringArray[], int arraySize)
 {
+	display_clear();
+
+	// Itterates stringArray and displays each instance
 	int i = 0;
 	while (i < arraySize)
 	{
