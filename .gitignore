@@ -5,3 +5,6 @@
 .deps/
 outfile.*
 *.c.o
+
+# MISC
+.vscode/
