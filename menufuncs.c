@@ -109,6 +109,7 @@ void instructions()
       if (page != 5)
         page = (page + 1);
 
-    quicksleep(750000);
+    // TODO: Maybe do this in a cleaner way
+    quicksleep(500000);
   }
 }
