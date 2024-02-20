@@ -19,18 +19,17 @@ void main_menu()
 
   // Gets input 4 to 2
   int choice = 0;
-  int button = getbtns();
 
   // Displays main menu
   char *menu[] = {"Main menu", "1. Instructions", "2. Play game", "3. High scores"};
   display_string_array(menu, 4);
 
   // Converts input to int -> to use with switch-case
-  if (button & 4)
+  if (btn4pressed())
     choice = 1;
-  else if (button & 2)
+  else if (btn3pressed())
     choice = 2;
-  else if (button & 1)
+  else if (btn2pressed())
     choice = 3;
 
   int timer = 1000;
@@ -82,8 +81,6 @@ void instructions()
   // Keeps the user on the instructions page untill BTN4 is pressed
   while (1)
   {
-    int button = getbtns();
-
     if (page == 1)
       display_string_array(instructions1, 4);
 
@@ -100,15 +97,15 @@ void instructions()
       display_string_array(instructions5, 4);
 
     // Goes to prev page if not already on page 1
-    if (button & 4)
+    if (btn4pressed())
       if (page != 1)
         page = (page - 1);
 
     // Break the loop (back to main menu)
-    if (button & 2)
+    if (btn3pressed())
       break;
 
-    if (button & 1)
+    if (btn2pressed())
       if (page != 5)
         page = (page + 1);
 
