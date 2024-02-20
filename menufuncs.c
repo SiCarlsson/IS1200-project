@@ -8,6 +8,7 @@
 int getbtns(void);
 void display_clear();
 void instructions();
+void highscores();
 
 /*
   MENU FUNCTIONS
@@ -54,12 +55,7 @@ void main_menu()
 
   // 3. High scores
   case 3:
-    while (timer != 0)
-    {
-      display_string(3, "High scores");
-      display_update();
-      timer--;
-    }
+    highscores();
     break;
 
   default:
@@ -108,6 +104,36 @@ void instructions()
     if (btn2pressed())
       if (page != 5)
         page = (page + 1);
+
+    // TODO: Maybe do this in a cleaner way
+    quicksleep(500000);
+  }
+}
+
+void highscores()
+{
+  char temp[] = ".............";
+
+  char name[] = "ABC";
+
+  int i = 0;
+  int j = 0;
+  while (name[i] != '\0')
+  {
+    temp[j] = name[i];
+    i++;
+    j++;
+  }
+
+  // Display the formatted string
+  display_string(1, temp);
+  display_update();
+
+  // Keeps the user on the instructions page until BTN4 is pressed
+  while (1)
+  {
+    if (btn3pressed())
+      break;
 
     // TODO: Maybe do this in a cleaner way
     quicksleep(500000);
