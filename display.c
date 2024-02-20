@@ -23,6 +23,13 @@ static void num32asc(char *s, int);
 #define DISPLAY_TURN_OFF_VDD (PORTFSET = 0x40)
 #define DISPLAY_TURN_OFF_VBAT (PORTFSET = 0x20)
 
+// Size of the display
+const int displayW = 128;
+const int displayH = 32;
+
+// Size of bird in pixels
+const int birdsize = 3;
+
 /* quicksleep:
 	 A simple function to create a small delay.
 	 Very inefficient use of computing resources,
@@ -30,7 +37,8 @@ static void num32asc(char *s, int);
 void quicksleep(int cyc)
 {
 	int i;
-	for (i = cyc; i > 0; i--);
+	for (i = cyc; i > 0; i--)
+		;
 }
 
 uint8_t spi_send_recv(uint8_t data)
@@ -108,8 +116,8 @@ void display_image(int x, const uint8_t *data)
 
 		DISPLAY_CHANGE_TO_DATA_MODE;
 
-		for (j = 0; j < 32; j++)
-			spi_send_recv(~data[i * 32 + j]);
+		for (j = 0; j < 128; j++)
+			spi_send_recv(~data[i * 128 + j]);
 	}
 }
 
@@ -151,6 +159,15 @@ void display_clear()
 	display_string(3, "");
 }
 
+void display_clear_pixels()
+{
+	int byte = 0;
+	for (byte = 0; byte < 512; byte++)
+	{
+		displayBuffer[byte] = 255;
+	}
+}
+
 /*
 	Helper function to display four lines of text
 */
@@ -166,6 +183,56 @@ void display_string_array(char *stringArray[], int arraySize)
 		i++;
 	}
 	display_update();
+}
+
+void display_pixel(int xPos, int yPos)
+{
+	// Failsafe, pixel cannot be outside screen
+	if (xPos < 0 || xPos > 128 || yPos < 0 || yPos > 32)
+		return;
+
+	int yByte;
+
+	if (yPos >= 24 && yPos < 32)
+	{
+		yByte = twoToPower(yPos - (displayH * 3));
+		displayBuffer[xPos + (displayW * 3)] &= (~yByte);
+	}
+	if (yPos >= 16 && yPos < 24)
+	{
+		yByte = twoToPower(yPos - (displayH * 2));
+		displayBuffer[xPos + (displayW * 2)] &= (~yByte);
+	}
+	if (yPos >= 8 && yPos < 16)
+	{
+		yByte = twoToPower(yPos - displayH);
+		displayBuffer[xPos + displayW] &= (~yByte);
+	}
+	if (yPos < 8)
+	{
+		yByte = twoToPower(yPos);
+		displayBuffer[xPos] &= (~yByte);
+	}
+}
+
+void display_bird(int xPos, int yPos)
+{
+	// (x-1, y+1) (x, y+1) (x+1, y+1)
+	// (x-1, y)	  (x, y)   (x+1, y)
+	// (x-1, y-1) (x, y-1) (x+1, y-1)
+
+	int i = 0;
+	int j = 0;
+	while (i < birdsize)
+	{
+		while (j < birdsize)
+		{
+			display_pixel((xPos + i - 1), (yPos + j - 1));
+			j++;
+		}
+		i++;
+		j = 0;
+	}
 }
 
 /* Helper function, local to this file.

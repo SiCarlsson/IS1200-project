@@ -3,11 +3,13 @@
 
 #include <stdint.h>  /* Declarations of uint_32 and the like */
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
+#include "mipslab.h" /* Needed for displayBuffer */
 
 // Declaration of functions
 int getbtns(void);
 void display_clear();
 void instructions();
+void toGame();
 void highscores();
 
 /*
@@ -27,13 +29,18 @@ void main_menu()
 
   // Converts input to int -> to use with switch-case
   if (btn4pressed())
+  {
     choice = 1;
+  }
   else if (btn3pressed())
+  {
     choice = 2;
+  }
   else if (btn2pressed())
+  {
     choice = 3;
+  }
 
-  int timer = 1000;
   switch (choice)
   {
     display_clear();
@@ -45,12 +52,7 @@ void main_menu()
 
   // 2. Play game
   case 2:
-    while (timer != 0)
-    {
-      display_string(2, "Play game");
-      display_update();
-      timer--;
-    }
+    toGame();
     break;
 
   // 3. High scores
@@ -99,7 +101,10 @@ void instructions()
 
     // Break the loop (back to main menu)
     if (btn3pressed())
+    {
+      quicksleep(1000000);
       break;
+    }
 
     if (btn2pressed())
       if (page != 5)
@@ -107,6 +112,37 @@ void instructions()
 
     // TODO: Maybe do this in a cleaner way
     quicksleep(500000);
+  }
+}
+
+void toGame()
+{
+  display_clear();
+  display_clear_pixels();
+
+  int x = 0;
+  int y = 0;
+  
+  while (1)
+  {
+    display_clear_pixels();
+
+    // Bird is written to the buffer
+    display_bird(x, y);
+
+    // Sending the display buffer to OLED screen
+    display_image(0, displayBuffer);
+
+    x++;
+    y++;
+    quicksleep(1000000);
+
+
+    if (btn4pressed())
+    {
+      quicksleep(1000000);
+      break;
+    }
   }
 }
 
@@ -133,7 +169,10 @@ void highscores()
   while (1)
   {
     if (btn3pressed())
+    {
+      quicksleep(1000000);
       break;
+    }
 
     // TODO: Maybe do this in a cleaner way
     quicksleep(500000);

@@ -8,9 +8,6 @@
   This file handles all logic of the actual game
 */
 
-// Size of bird in pixels
-const int birdsize = 3;
-
 struct Bird
 {
   double posX;
@@ -27,3 +24,12 @@ struct Obstacle
   int upsideDown;
   int spacing;
 };
+
+void game_loop(void)
+{
+  // FIXME: Should be while(until colission with obstacle)
+  while (1)
+  {
+
+  }
+}
