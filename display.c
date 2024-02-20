@@ -25,7 +25,7 @@ static void num32asc(char *s, int);
 
 // Size of the display
 const int displayW = 128;
-const int displayH = 32;
+const int displayH = 8;
 
 // Size of bird in pixels
 const int birdsize = 3;
