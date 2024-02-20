@@ -121,7 +121,7 @@ void toGame()
   display_clear_pixels();
 
   int x = 0;
-  int y = 0;
+  int y = 4;
   
   while (1)
   {

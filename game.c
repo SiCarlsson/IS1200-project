@@ -28,8 +28,4 @@ struct Obstacle
 void game_loop(void)
 {
   // FIXME: Should be while(until colission with obstacle)
-  while (1)
-  {
-
-  }
 }
