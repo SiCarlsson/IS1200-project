@@ -14,12 +14,15 @@
 void game_over();
 void main_menu();
 
+// Constants
+const int jumpSpeed = 5;
+
 struct Bird
 {
   int posX;
   int posY;
-  double speedX;
-  double speedY;
+  double speedX; // Left/right speed
+  double speedY; // Gravity
 };
 
 struct Obstacle
@@ -35,6 +38,7 @@ void game_loop(void)
   struct Bird bird;
   bird.posX = 10;
   bird.posY = 16;
+  bird.speedX = 0;
   bird.speedY = 1;
 
   struct Obstacle obstacles[3];
@@ -65,9 +69,39 @@ void game_loop(void)
       // Bird is written to the buffer
       display_bird(bird.posX, bird.posY);
 
-      bird.posY += bird.speedY;
+      /*
+        Change birds coordinates
+      */
+      bird.posY += bird.speedY; // Gravity affects bird
+      bird.posX += bird.speedX;
+      
+      /*
+        Keeps the bird on the screen
+      */
+      if (bird.posY <= 1) // Keeps the bird from jumping out of screen (top)
+        bird.posY = 1;
+      if (bird.posX <= 1) // Keeps the bird from jumping out of screen (left)
+        bird.posX = 1;
+      if (bird.posX >= 126) // Keeps the bird from jumping out of screen (right)
+        bird.posX = 126;
 
-      /* GAME OVER Controllers */
+
+
+      // Makes the speed go back to its original value
+      if (bird.speedY < 1)
+        bird.speedY += 1;
+
+      // Temporary checks - REMOVE WHEN DONE
+      if (bird.posY == 27)
+      {
+        bird.speedX = 1000;
+        bird.speedY = -4; // Gravit changes -5
+      }
+
+      /* 
+        GAME OVER Controllers
+      */
+      // If bird touches the groun
       if (bird.posY >= 31)
         game_over();
       // ADD OBSTACLE CHECK
@@ -94,7 +128,7 @@ void game_over()
   {
     if (btn4pressed())
     {
-      quicksleep(500000);
+      quicksleep(1000000);
       main_menu();
     }
   }
