@@ -16,21 +16,22 @@ void main_menu();
 
 // Constants
 const int jumpSpeed = 3;
+const int moveSpeed = 2;
 const int counterLimit = 2;
 
 struct Bird
 {
   int posX;
   int posY;
-  double speedX; // Left/right speed
-  double speedY; // Gravity
+  int speedX; // Left/right speed
+  int speedY; // Gravity
 };
 
 struct Obstacle
 {
-  double posX;
-  double posY;
-  double speedX;
+  int posX;
+  int posY;
+  int speedX;
   int gap;
 };
 
@@ -38,9 +39,9 @@ void game_loop(void)
 {
   struct Bird bird;
   bird.posX = 10;
-  bird.posY = 16;
+  bird.posY = 0;
   bird.speedX = 0;
-  bird.speedY = 1;
+  bird.speedY = 3;
 
   struct Obstacle obstacles[3];
 
@@ -51,7 +52,7 @@ void game_loop(void)
 
   // 80 MHz = 80'000'000, Clock rate divider, Time out period
   // Beräkning för att få ett värde in i 16-bitars format
-  PR2 = ((80000000 / 256) / 25);
+  PR2 = ((80000000 / 256) / 50);
   T2CONSET = 0x8000;
 
   int counter2 = 0;
@@ -76,21 +77,37 @@ void game_loop(void)
       /*
         Takes user inputs
       */
+      if (btn2pressed())
+        counter2++;
       if (btn3pressed())
-      {
         counter3++;
-      }
+      if (btn4pressed())
+        counter4++;
 
       /*
         Change birds coordinates
       */
+      // Controls when the moves right
+      if (counter2 >= counterLimit)
+      {
+        bird.speedX = moveSpeed;
+        counter2 = 0;
+      }
+      // Controls when the bird jumps
       if (counter3 >= counterLimit)
       {
         bird.speedY -= jumpSpeed;
         counter3 = 0;
       }
+      // Controls when the bird moves left
+      if (counter4 >= counterLimit)
+      {
+        bird.speedX = (moveSpeed) * (-1);
+        counter4 = 0;
+      }
 
-      bird.posY += bird.speedY; // Gravity affects bird
+      // Store values in bird
+      bird.posY += bird.speedY;
       bird.posX += bird.speedX;
 
       /*
@@ -103,28 +120,29 @@ void game_loop(void)
       if (bird.posX >= 126) // Keeps the bird from jumping out of screen (right)
         bird.posX = 126;
 
-      // Makes the speed go back to its original value
+      /*
+        Makes the speed go back to its original value
+      */
       if (bird.speedY < 1)
-        bird.speedY += 1;
-
-      // Temporary checks - REMOVE WHEN DONE
-      // if (bird.posY == 27)
-      // {
-      //   bird.speedX = 2;
-      //   bird.speedY = -4; // Gravit changes -5
-      // }
+        bird.speedY += 1; // Slow traceback
+      if (bird.speedX != 0)
+        bird.speedX = 0; // Direct traceback
 
       /*
-        GAME OVER Controllers
+        Game Over Controllers
       */
       // If bird touches the groun
       if (bird.posY >= 31)
         game_over();
       // ADD OBSTACLE CHECK
 
+      /*
+        Final updates
+      */
       // Sending the display buffer to OLED screen
       display_image(0, displayBuffer);
 
+      // Reset timeoutcounter
       timeoutcount = 0;
     }
   }
@@ -139,13 +157,4 @@ void game_over()
   // GET NAME
   // DISPLAY NAME AND SCORE
   display_update();
-
-  while (1)
-  {
-    if (btn4pressed())
-    {
-      quicksleep(1000000);
-      main_menu();
-    }
-  }
 }
