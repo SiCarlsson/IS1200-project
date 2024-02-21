@@ -3,7 +3,6 @@
 
 #include <stdint.h>  /* Declarations of uint_32 and the like */
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
-#include "mipslab.h" /* Needed for displayBuffer */
 
 // Declaration of functions
 int getbtns(void);
@@ -119,31 +118,7 @@ void toGame()
 {
   display_clear();
   display_clear_pixels();
-
-  int x = 0;
-  int y = 4;
-  
-  while (1)
-  {
-    display_clear_pixels();
-
-    // Bird is written to the buffer
-    display_bird(x, y);
-
-    // Sending the display buffer to OLED screen
-    display_image(0, displayBuffer);
-
-    x++;
-    y++;
-    quicksleep(1000000);
-
-
-    if (btn4pressed())
-    {
-      quicksleep(1000000);
-      break;
-    }
-  }
+  game_loop();
 }
 
 void highscores()

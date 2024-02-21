@@ -30,6 +30,10 @@ const int displayH = 8;
 // Size of bird in pixels
 const int birdsize = 3;
 
+// Size of obstacle
+const int obstacleW = 5;
+
+
 /* quicksleep:
 	 A simple function to create a small delay.
 	 Very inefficient use of computing resources,
@@ -215,6 +219,9 @@ void display_pixel(int xPos, int yPos)
 	}
 }
 
+/*
+	Uses display_pixel() to draw a bird
+*/
 void display_bird(int xPos, int yPos)
 {
 	// (x-1, y+1) (x, y+1) (x+1, y+1)
@@ -233,6 +240,11 @@ void display_bird(int xPos, int yPos)
 		i++;
 		j = 0;
 	}
+}
+
+void display_obstacle(int gap, int xPos)
+{
+
 }
 
 /* Helper function, local to this file.
