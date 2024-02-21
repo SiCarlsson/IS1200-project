@@ -14,9 +14,9 @@
 void game_over();
 void main_menu();
 
-
 // Constants
-const int jumpSpeed = 5;
+const int jumpSpeed = 3;
+const int counterLimit = 2;
 
 struct Bird
 {
@@ -54,6 +54,10 @@ void game_loop(void)
   PR2 = ((80000000 / 256) / 25);
   T2CONSET = 0x8000;
 
+  int counter2 = 0;
+  int counter3 = 0;
+  int counter4 = 0;
+
   while (1)
   {
     // usage of the timer from lab 3
@@ -74,13 +78,18 @@ void game_loop(void)
       */
       if (btn3pressed())
       {
-        bird.speedY -= jumpSpeed;
+        counter3++;
       }
-
 
       /*
         Change birds coordinates
       */
+      if (counter3 >= counterLimit)
+      {
+        bird.speedY -= jumpSpeed;
+        counter3 = 0;
+      }
+
       bird.posY += bird.speedY; // Gravity affects bird
       bird.posX += bird.speedX;
 
