@@ -12,6 +12,7 @@
 
 // Declaration of functions
 void game_over();
+void main_menu();
 
 struct Bird
 {
@@ -38,29 +39,43 @@ void game_loop(void)
 
   struct Obstacle obstacles[3];
 
+  // initialisera Timer 2 (Från labb3)
+  TMR2 = 0x0;
+  T2CON = 0x70;
+  int timeoutcount = 0;
+
+  // 80 MHz = 80'000'000, Clock rate divider, Time out period
+  // Beräkning för att få ett värde in i 16-bitars format
+  PR2 = ((80000000 / 256) / 25);
+  T2CONSET = 0x8000;
+
   while (1)
   {
-    display_clear_pixels();
-
-    // Bird is written to the buffer
-    display_bird(bird.posX, bird.posY);
-
-    bird.posY += bird.speedY;
-
-    /* GAME OVER Controllers */
-    if (bird.posY >= 31)
-      game_over();
-    // ADD OBSTACLE CHECK
-
-    // Sending the display buffer to OLED screen
-    display_image(0, displayBuffer);
-
-    quicksleep(1000000);
-
-    if (btn4pressed())
+    // usage of the timer from lab 3
+    if (IFS(0) & 0x100)
     {
-      quicksleep(1000000);
-      break;
+      timeoutcount++;
+      IFSCLR(0) = 0x100;
+    }
+
+    if (timeoutcount == 1)
+    {
+      display_clear_pixels();
+
+      // Bird is written to the buffer
+      display_bird(bird.posX, bird.posY);
+
+      bird.posY += bird.speedY;
+
+      /* GAME OVER Controllers */
+      if (bird.posY >= 31)
+        game_over();
+      // ADD OBSTACLE CHECK
+
+      // Sending the display buffer to OLED screen
+      display_image(0, displayBuffer);
+
+      timeoutcount = 0;
     }
   }
 }
@@ -70,14 +85,16 @@ void game_over()
   display_clear_pixels();
   display_clear();
 
-  display_string(1, "GAME OVER");
+  display_string(1, "   GAME OVER");
+  // GET NAME
+  // DISPLAY NAME AND SCORE
   display_update();
 
   while (1)
   {
     if (btn4pressed())
     {
-      quicksleep(1000000);
+      quicksleep(500000);
       main_menu();
     }
   }
