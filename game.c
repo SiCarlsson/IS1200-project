@@ -14,6 +14,7 @@
 void game_over();
 void main_menu();
 
+
 // Constants
 const int jumpSpeed = 5;
 
@@ -66,15 +67,23 @@ void game_loop(void)
     {
       display_clear_pixels();
 
-      // Bird is written to the buffer
-      display_bird(bird.posX, bird.posY);
+      display_bird(bird.posX, bird.posY); // Bird is written to the buffer
+
+      /*
+        Takes user inputs
+      */
+      if (btn3pressed())
+      {
+        bird.speedY -= jumpSpeed;
+      }
+
 
       /*
         Change birds coordinates
       */
       bird.posY += bird.speedY; // Gravity affects bird
       bird.posX += bird.speedX;
-      
+
       /*
         Keeps the bird on the screen
       */
@@ -85,20 +94,18 @@ void game_loop(void)
       if (bird.posX >= 126) // Keeps the bird from jumping out of screen (right)
         bird.posX = 126;
 
-
-
       // Makes the speed go back to its original value
       if (bird.speedY < 1)
         bird.speedY += 1;
 
       // Temporary checks - REMOVE WHEN DONE
-      if (bird.posY == 27)
-      {
-        bird.speedX = 1000;
-        bird.speedY = -4; // Gravit changes -5
-      }
+      // if (bird.posY == 27)
+      // {
+      //   bird.speedX = 2;
+      //   bird.speedY = -4; // Gravit changes -5
+      // }
 
-      /* 
+      /*
         GAME OVER Controllers
       */
       // If bird touches the groun
