@@ -12,6 +12,7 @@
 
 // Declaration of functions
 void game_over();
+void display_flash_gameover();
 void main_menu();
 
 // Constants
@@ -37,13 +38,19 @@ struct Obstacle
 
 void game_loop(void)
 {
+
+  // Initialize bird
   struct Bird bird;
   bird.posX = 10;
   bird.posY = 0;
   bird.speedX = 0;
   bird.speedY = 3;
 
+  // Initialize obstacles
   struct Obstacle obstacles[3];
+
+  // Variable keeps track of an active game, 0 if game is over
+  int activeGame = 1;
 
   // initialisera Timer 2 (Från labb3)
   TMR2 = 0x0;
@@ -59,7 +66,7 @@ void game_loop(void)
   int counter3 = 0;
   int counter4 = 0;
 
-  while (1)
+  while (activeGame)
   {
     // usage of the timer from lab 3
     if (IFS(0) & 0x100)
@@ -131,9 +138,12 @@ void game_loop(void)
       /*
         Game Over Controllers
       */
-      // If bird touches the groun
+      // If bird touches the ground the game is over
       if (bird.posY >= 31)
-        game_over();
+      {
+        activeGame = 0;
+        break;
+      }
       // ADD OBSTACLE CHECK
 
       /*
@@ -146,15 +156,37 @@ void game_loop(void)
       timeoutcount = 0;
     }
   }
+  game_over();
 }
 
 void game_over()
 {
-  display_clear_pixels();
-  display_clear();
+  // Loop forces all buttons to be disabled temporarily
+  while (1)
+  {
+    display_clear_pixels();
+    display_clear();
 
-  display_string(1, "   GAME OVER");
+    display_flash_gameover();
+    break;
+  }
+
+  quicksleep(5000000);
+  display_string(3, " Continue: btn3");
+  display_update();
+
+  // TODO
   // GET NAME
   // DISPLAY NAME AND SCORE
-  display_update();
+
+  // Loops waits for user input before going to the main menu
+  while (1)
+  {
+    if (btn3pressed())
+    {
+      quicksleep(1000000);
+      break;
+    }
+  }
+  main_menu();
 }
