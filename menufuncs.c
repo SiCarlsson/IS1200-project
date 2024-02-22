@@ -67,7 +67,7 @@ void main_menu()
 void instructions()
 {
   char *instructions1[] = {"Manual, p.1", "BTN4: Prev. page", "BTN3: Main menu", "BTN2: Next page"};
-  char *instructions2[] = {"Manual, p.2", "BTN4: Jump", "BTN3: Go left", "BTN2: Go right"};
+  char *instructions2[] = {"Manual, p.2", "BTN4: Go left", "BTN3: Jump", "BTN2: Go right"};
   char *instructions3[] = {"Manual, p.3", "Each obstacle", "equals one", "point"};
   char *instructions4[] = {"Manual, p.4", "Game over", "when you hit", "an obstacle"};
   char *instructions5[] = {"Manual, p.5", "That's it!", "Go back to", "the main manu"};
@@ -137,6 +137,7 @@ void highscores()
   }
 
   // Display the formatted string
+  display_string(0, "Highscores");
   display_string(1, temp);
   display_update();
 

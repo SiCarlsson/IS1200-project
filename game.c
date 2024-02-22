@@ -20,7 +20,9 @@ const int jumpSpeed = 3;
 const int moveSpeed = 2;
 const int counterLimit = 2; // Works as a delay-function to button inputs
 
-int obstacleGap = 20;
+int obstacleAmount = 2;
+int obstacleGap = 27;
+int obstacleSpacing = 64; // Display width / 2
 
 struct Bird
 {
@@ -28,6 +30,7 @@ struct Bird
   int posY;
   int speedX; // Left/right speed
   int speedY; // Gravity
+  int score;
 };
 
 struct Obstacle
@@ -35,6 +38,7 @@ struct Obstacle
   int posX;
   int posY;
   int speedX;
+  int pointGiven;
 };
 
 void game_loop(void)
@@ -44,31 +48,28 @@ void game_loop(void)
   */
   // Initialize bird
   struct Bird bird;
-  bird.posX = 10;
+  bird.posX = 15;
   bird.posY = 0;
   bird.speedX = 0;
   bird.speedY = 3;
+  bird.score = 0;
 
   // Initialize obstacles
-  struct Obstacle obstacles[3];
-
-  obstacles[0].posX = 100;
-  obstacles[0].posY = 8;
-  obstacles[0].speedX = -1;
+  struct Obstacle obstacles[obstacleAmount];
+  int obstacleStartX = 127;
 
   // Sets the same values for all three obstacles
-  // int i;
-  // for (i = 0; i < 3; i++)
-  // {
-  //   obstacles[i].gap = 15;
-  //   obstacles[i].posX = 140;
-  //   obstacles[i].posY = 8;
-  //   obstacles[i].speedX = -3;
+  int i;
+  for (i = 0; i < obstacleAmount; i++)
+  {
+    obstacles[i].posX = obstacleStartX;
+    obstacles[i].posY = 2;
+    obstacles[i].speedX = -3;
+    obstacles[i].pointGiven = 0;
 
-  //   // Forces the value to be at least 8 (real scope: 8 to 24)
-  //   if (obstacles[i].posY < 8)
-  //     obstacles[i].posY += 8;
-  // }
+    // Spread the obstacles
+    obstacleStartX += obstacleSpacing;
+  }
 
   // Variable keeps track of an active game, 0 if game is over
   int activeGame = 1;
@@ -104,7 +105,13 @@ void game_loop(void)
         Displays bird and obstacle
       */
       display_bird(bird.posX, bird.posY); // Bird is written to the buffer
-      display_obstacle(obstacles[0].posX, obstacles[0].posY, obstacleGap);
+
+      int i; // Used for all loops in the game
+      for (i = 0; i < obstacleAmount; i++)
+      {
+        if (obstacles[i].posX < 128)
+          display_obstacle(obstacles[i].posX, obstacles[i].posY, obstacleGap);
+      }
 
       /*
         Takes user inputs
@@ -138,18 +145,15 @@ void game_loop(void)
         counter4 = 0;
       }
 
-      // Store values in bird
       bird.posY += bird.speedY;
       bird.posX += bird.speedX;
 
       /*
-        Change obstacle coordinates
+        Change object coordinates
       */
-      obstacles[0].posX += obstacles[0].speedX;
-
-      // TESTING PURPOSE
-      if (obstacles[0].posX <= 1)
-        obstacles[0].posX = 60;
+      // Move all obstacles to the left
+      for (i = 0; i < obstacleAmount; i++)
+        obstacles[i].posX += obstacles[i].speedX;
 
       /*
         Keeps the bird on the screen
@@ -160,6 +164,24 @@ void game_loop(void)
         bird.posX = 1;
       if (bird.posX >= 126) // Keeps the bird from jumping out of screen (right)
         bird.posX = 126;
+
+      /*
+        Checks if score should be added to bird
+      */
+      for (i = 0; i < obstacleAmount; i++)
+      {
+        if (bird.posX > (obstacles[i].posX - 1)) // If the bird has passed the obstacle
+          bird.score++;
+      }
+
+      /*
+        Resets the obstacles
+      */
+      for (i = 0; i < obstacleAmount; i++)
+      {
+        if (obstacles[i].posX <= 1)
+          obstacles[i].posX = 128;
+      }
 
       /*
         Makes the speed go back to its original value
@@ -205,7 +227,7 @@ void game_over()
     break;
   }
 
-  quicksleep(5000000);
+  quicksleep(6000000);
   display_string(3, " Continue: btn3");
   display_update();
 
