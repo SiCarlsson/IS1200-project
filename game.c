@@ -18,7 +18,9 @@ void main_menu();
 // Constants
 const int jumpSpeed = 3;
 const int moveSpeed = 2;
-const int counterLimit = 2;
+const int counterLimit = 2; // Works as a delay-function to button inputs
+
+int obstacleGap = 20;
 
 struct Bird
 {
@@ -33,7 +35,6 @@ struct Obstacle
   int posX;
   int posY;
   int speedX;
-  int gap;
 };
 
 void game_loop(void)
@@ -51,7 +52,6 @@ void game_loop(void)
   // Initialize obstacles
   struct Obstacle obstacles[3];
 
-  obstacles[0].gap = 20;
   obstacles[0].posX = 100;
   obstacles[0].posY = 8;
   obstacles[0].speedX = -1;
@@ -100,24 +100,11 @@ void game_loop(void)
     {
       display_clear_pixels();
 
+      /*
+        Displays bird and obstacle
+      */
       display_bird(bird.posX, bird.posY); // Bird is written to the buffer
-
-      // Print an obstacle
-      int i = 0;
-      int j = 0;
-      int gapCounter = 0;
-      while (i < 3)
-      {
-        while (j < 33)
-        {
-          if (j <= obstacles[0].posY || j >= (obstacles[0].posY + obstacles[0].gap))
-            display_pixel((obstacles[0].posX + i - 1), j);
-
-          j++;
-        }
-        i++;
-        j = 0;
-      }
+      display_obstacle(obstacles[0].posX, obstacles[0].posY, obstacleGap);
 
       /*
         Takes user inputs

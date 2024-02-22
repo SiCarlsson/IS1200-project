@@ -243,7 +243,21 @@ void display_bird(int xPos, int yPos)
 // Uses display_pixel to draw an obstacle
 void display_obstacle(int xPos, int yPos, int gap)
 {
+	int i = 0;
+	int j = 0;
+	int gapCounter = 0;
+	while (i < 3)
+	{
+		while (j <= displayH)
+		{
+			if (j <= yPos || j >= (yPos + gap))
+				display_pixel((xPos + i - 1), j);
 
+			j++;
+		}
+		i++;
+		j = 0;
+	}
 }
 
 /* Helper function, local to this file.
