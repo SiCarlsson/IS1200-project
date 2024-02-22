@@ -25,14 +25,14 @@ static void num32asc(char *s, int);
 
 // Size of the display
 const int displayW = 128;
-const int displayH = 8;
+const int displayH = 32;
+const int displayPageH = 8;
 
 // Size of bird in pixels
 const int birdsize = 3;
 
-// Size of obstacle
+// size of obstacle in pixels
 const int obstacleW = 5;
-
 
 /* quicksleep:
 	 A simple function to create a small delay.
@@ -199,17 +199,17 @@ void display_pixel(int xPos, int yPos)
 
 	if (yPos >= 24 && yPos < 32)
 	{
-		yByte = twoToPower(yPos - (displayH * 3));
+		yByte = twoToPower(yPos - (displayPageH * 3));
 		displayBuffer[xPos + (displayW * 3)] &= (~yByte);
 	}
 	if (yPos >= 16 && yPos < 24)
 	{
-		yByte = twoToPower(yPos - (displayH * 2));
+		yByte = twoToPower(yPos - (displayPageH * 2));
 		displayBuffer[xPos + (displayW * 2)] &= (~yByte);
 	}
 	if (yPos >= 8 && yPos < 16)
 	{
-		yByte = twoToPower(yPos - displayH);
+		yByte = twoToPower(yPos - displayPageH);
 		displayBuffer[xPos + displayW] &= (~yByte);
 	}
 	if (yPos < 8)
@@ -219,9 +219,7 @@ void display_pixel(int xPos, int yPos)
 	}
 }
 
-/*
-	Uses display_pixel() to draw a bird
-*/
+// Uses display_pixel() to draw a bird
 void display_bird(int xPos, int yPos)
 {
 	// (x-1, y+1) (x, y+1) (x+1, y+1)
@@ -242,7 +240,8 @@ void display_bird(int xPos, int yPos)
 	}
 }
 
-void display_obstacle(int gap, int xPos)
+// Uses display_pixel to draw an obstacle
+void display_obstacle(int xPos, int yPos, int gap)
 {
 
 }

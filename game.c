@@ -38,7 +38,9 @@ struct Obstacle
 
 void game_loop(void)
 {
-
+  /*
+    Initialization of game components
+  */
   // Initialize bird
   struct Bird bird;
   bird.posX = 10;
@@ -48,6 +50,25 @@ void game_loop(void)
 
   // Initialize obstacles
   struct Obstacle obstacles[3];
+
+  obstacles[0].gap = 20;
+  obstacles[0].posX = 100;
+  obstacles[0].posY = 8;
+  obstacles[0].speedX = -1;
+
+  // Sets the same values for all three obstacles
+  // int i;
+  // for (i = 0; i < 3; i++)
+  // {
+  //   obstacles[i].gap = 15;
+  //   obstacles[i].posX = 140;
+  //   obstacles[i].posY = 8;
+  //   obstacles[i].speedX = -3;
+
+  //   // Forces the value to be at least 8 (real scope: 8 to 24)
+  //   if (obstacles[i].posY < 8)
+  //     obstacles[i].posY += 8;
+  // }
 
   // Variable keeps track of an active game, 0 if game is over
   int activeGame = 1;
@@ -59,7 +80,7 @@ void game_loop(void)
 
   // 80 MHz = 80'000'000, Clock rate divider, Time out period
   // Beräkning för att få ett värde in i 16-bitars format
-  PR2 = ((80000000 / 256) / 50);
+  PR2 = ((80000000 / 256) / 25);
   T2CONSET = 0x8000;
 
   int counter2 = 0;
@@ -80,6 +101,23 @@ void game_loop(void)
       display_clear_pixels();
 
       display_bird(bird.posX, bird.posY); // Bird is written to the buffer
+
+      // Print an obstacle
+      int i = 0;
+      int j = 0;
+      int gapCounter = 0;
+      while (i < 3)
+      {
+        while (j < 33)
+        {
+          if (j <= obstacles[0].posY || j >= (obstacles[0].posY + obstacles[0].gap))
+            display_pixel((obstacles[0].posX + i - 1), j);
+
+          j++;
+        }
+        i++;
+        j = 0;
+      }
 
       /*
         Takes user inputs
@@ -116,6 +154,15 @@ void game_loop(void)
       // Store values in bird
       bird.posY += bird.speedY;
       bird.posX += bird.speedX;
+
+      /*
+        Change obstacle coordinates
+      */
+      obstacles[0].posX += obstacles[0].speedX;
+
+      // TESTING PURPOSE
+      if (obstacles[0].posX <= 1)
+        obstacles[0].posX = 60;
 
       /*
         Keeps the bird on the screen
