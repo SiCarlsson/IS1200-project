@@ -21,7 +21,6 @@ const int moveSpeed = 2;
 const int counterLimit = 2; // Works as a delay-function to button inputs
 
 int obstacleAmount = 2;
-int obstacleGap = 27;
 int obstacleSpacing = 64; // Display width / 2
 
 struct Bird
@@ -39,6 +38,7 @@ struct Obstacle
   int posY;
   int speedX;
   int pointGiven;
+  int gap;
 };
 
 void game_loop(void)
@@ -66,6 +66,7 @@ void game_loop(void)
     obstacles[i].posY = 2;
     obstacles[i].speedX = -3;
     obstacles[i].pointGiven = 0;
+    obstacles[i].gap = 27;
 
     // Spread the obstacles
     obstacleStartX += obstacleSpacing;
@@ -110,7 +111,7 @@ void game_loop(void)
       for (i = 0; i < obstacleAmount; i++)
       {
         if (obstacles[i].posX < 128)
-          display_obstacle(obstacles[i].posX, obstacles[i].posY, obstacleGap);
+          display_obstacle(obstacles[i].posX, obstacles[i].posY, obstacles[i].gap);
       }
 
       /*
@@ -177,12 +178,18 @@ void game_loop(void)
       /*
         Resets the obstacles
       */
+      int resetCounter = 0;
       for (i = 0; i < obstacleAmount; i++)
       {
         if (obstacles[i].posX <= 1)
         {
           obstacles[i].posX = 128;
           obstacles[i].pointGiven = 0;
+
+          if (resetCounter % 4 == 0)
+            obstacles[i].gap -= 1;
+          
+          resetCounter++;
         }
       }
 
@@ -210,7 +217,7 @@ void game_loop(void)
           }
 
           // Lower obstacle hit
-          if (bird.posY >= (obstacles[i].posY + obstacleGap))
+          if (bird.posY >= (obstacles[i].posY + obstacles[i].gap))
           {
             activeGame = 0;
             break;
