@@ -2,6 +2,7 @@
 // This file written 2024 by S Carlsson and E Lindblom
 
 #include <stdint.h>  /* Declarations of uint_32 and the like */
+#include <stdlib.h>  /* Declarations to use Random generator */
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 
 void display_flash_gameover()
@@ -46,4 +47,18 @@ void display_flash_gameover()
 
   display_string(1, "   GAME OVER");
   display_update();
+}
+
+static uint32_t seedCounter = 1;
+
+// Pseudo-random number generator
+int customRandom(int gap)
+{
+  seedCounter = (seedCounter * 1664525U + 1013904223U) % UINT32_MAX;
+
+  // Generate a random value between 2 and 31
+  int randomValue = (seedCounter % 30) + 2;
+
+  // Adjust for the gap and divide by 2
+  return randomValue / 2;
 }
