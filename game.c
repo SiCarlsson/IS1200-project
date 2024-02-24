@@ -170,7 +170,7 @@ void game_loop(void)
       */
       for (i = 0; i < obstacleAmount; i++)
       {
-        if (bird.posX > (obstacles[i].posX - 1)) // If the bird has passed the obstacle
+        if (bird.posX > (obstacles[i].posX + 1) && obstacles[i].pointGiven == 0) // If the bird has passed the obstacle
           bird.score++;
       }
 
@@ -180,16 +180,11 @@ void game_loop(void)
       for (i = 0; i < obstacleAmount; i++)
       {
         if (obstacles[i].posX <= 1)
+        {
           obstacles[i].posX = 128;
+          obstacles[i].pointGiven = 0;
+        }
       }
-
-      /*
-        Makes the speed go back to its original value
-      */
-      if (bird.speedY < 1)
-        bird.speedY += 1; // Slow traceback
-      if (bird.speedX != 0)
-        bird.speedX = 0; // Direct traceback
 
       /*
         Game Over Controllers
@@ -200,7 +195,36 @@ void game_loop(void)
         activeGame = 0;
         break;
       }
-      // ADD OBSTACLE CHECK
+
+      // Collission checker with obstacles
+      for (i = 0; i < obstacleAmount; i++) // Obstacle width
+      {
+        //
+        if (bird.posX >= obstacles[i].posX - 1 && bird.posX <= obstacles[i].posX + 1) // x-value matches with an obstacle
+        {
+          // Upper obstacle hit
+          if (bird.posY <= obstacles[i].posY + 1) // y-value matches with the upper obstacle
+          {
+            activeGame = 0;
+            break;
+          }
+
+          // Lower obstacle hit
+          if (bird.posY >= (obstacles[i].posY + obstacleGap))
+          {
+            activeGame = 0;
+            break;
+          }
+        }
+      }
+
+      /*
+        Makes the speed go back to its original value
+      */
+      if (bird.speedY < 1)
+        bird.speedY += 1; // Slow traceback
+      if (bird.speedX != 0)
+        bird.speedX = 0; // Direct traceback
 
       /*
         Final updates

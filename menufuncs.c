@@ -70,7 +70,7 @@ void instructions()
   char *instructions2[] = {"Manual, p.2", "BTN4: Go left", "BTN3: Jump", "BTN2: Go right"};
   char *instructions3[] = {"Manual, p.3", "Each obstacle", "equals one", "point"};
   char *instructions4[] = {"Manual, p.4", "Game over", "when you hit", "an obstacle"};
-  char *instructions5[] = {"Manual, p.5", "That's it!", "Go back to", "the main manu"};
+  char *instructions5[] = {"Manual, p.5", "That's it!", "Go back to", "the main menu"};
 
   // Keeps track of the page
   int page = 1;
