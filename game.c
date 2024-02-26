@@ -76,6 +76,9 @@ void game_loop(void)
   // Variable keeps track of an active game, 0 if game is over
   int activeGame = 1;
 
+  // Initialize score counter
+  PORTE = 0x0;
+
   // initialisera Timer 2 (Från labb3)
   TMR2 = 0x0;
   T2CON = 0x70;
@@ -172,8 +175,14 @@ void game_loop(void)
       */
       for (i = 0; i < obstacleAmount; i++)
       {
-        if (bird.posX > (obstacles[i].posX + 1) && obstacles[i].pointGiven == 0) // If the bird has passed the obstacle
-          bird.score++;
+        if (bird.posX > obstacles[i].posX) // If the bird has passed the obstacle
+        {
+          if (obstacles[i].pointGiven == 0)
+          {
+            obstacles[i].pointGiven = 1;
+            PORTE += 1;
+          }
+        }
       }
 
       /*
@@ -186,8 +195,8 @@ void game_loop(void)
         {
           // Updates on all resets
           obstacles[i].posX = 128;
-          obstacles[i].pointGiven = 0;
           obstacles[i].posY = customRandom(obstacles[i].gap);
+          obstacles[i].pointGiven = 0;
 
           // Updates every 4th reset
           if (resetCounter % 4 == 0)
