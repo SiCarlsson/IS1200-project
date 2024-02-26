@@ -15,6 +15,8 @@ void game_over();
 void display_flash_gameover();
 void main_menu();
 int customRandom(int gap);
+char *itoaconv(int num);
+int reachedHighscore(int currentScore, int highscores[]);
 
 // Constants
 const int jumpSpeed = 3;
@@ -23,6 +25,10 @@ const int counterLimit = 2; // Works as a delay-function to button inputs
 
 int obstacleAmount = 2;
 int obstacleSpacing = 64; // Display width / 2
+
+// HIGHSCORES
+int scoreboard[] = {5, 5, 5};
+char *scoreboardNames[] = {"NaN", "NaN", "NaN"};
 
 struct Bird
 {
@@ -180,6 +186,7 @@ void game_loop(void)
           if (obstacles[i].pointGiven == 0)
           {
             obstacles[i].pointGiven = 1;
+            bird.score += 1;
             PORTE += 1;
           }
         }
@@ -268,25 +275,43 @@ void game_over()
     display_clear();
 
     display_flash_gameover();
-    break;
-  }
 
-  quicksleep(6000000);
-  display_string(3, " Continue: btn3");
-  display_update();
+    quicksleep(6000000);
+    display_clear();
 
-  // TODO
-  // GET NAME
-  // DISPLAY NAME AND SCORE
+    char *scoreStr = itoaconv(score);
 
-  // Loops waits for user input before going to the main menu
-  while (1)
-  {
-    if (btn3pressed())
+    if (reachedHighscore(PORTE, scoreboard) != 4)
     {
-      quicksleep(1000000);
-      break;
+      display_string(0, "Idag var du");
+      display_string(1, "bäst");
     }
+    else
+    {
+      display_string(0, "Idag var du");
+      display_string(1, "sämst");
+    }
+
+    display_update();
+    // TODO
+    // GET NAME
+    // DISPLAY NAME AND SCORE
+
+    quicksleep(6000000);
+    display_string(3, "Continue: btn3");
+    display_update();
+
+    // Loops waits for user input before going to the main menu
+    while (1)
+    {
+      if (btn3pressed())
+      {
+        quicksleep(1000000);
+        break;
+      }
+    }
+
+    break;
   }
   main_menu();
 }

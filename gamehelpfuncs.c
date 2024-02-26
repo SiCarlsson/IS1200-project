@@ -49,7 +49,6 @@ void display_flash_gameover()
   display_update();
 }
 
-
 // Pseudo-random number generator
 static uint32_t seedCounter = 1;
 
@@ -57,16 +56,32 @@ int customRandom(int gap)
 {
   seedCounter = (seedCounter * 1664525U + 1013904223U) % UINT32_MAX;
 
-  // Generate a random value between 0 and 15 
+  // Generate a random value between 0 and 15
   int posY = (seedCounter % 32) / 2;
 
   if (posY < 2)
     posY = 2;
-  
-  // Corrects any 
+
+  // Corrects any
   while (posY + gap > 29)
     posY -= 1;
-  
+
   return posY;
 }
 
+int reachedHighscore(int currentScore, int highscores[])
+{
+  int boardPosition = 4;
+
+  int i;
+  for (i = 0; i < 3; i++)
+  {
+    if (currentScore > highscores[i])
+      boardPosition--;
+
+    else if (currentScore == highscores[i])
+      return boardPosition;
+  }
+
+  return boardPosition;
+}
