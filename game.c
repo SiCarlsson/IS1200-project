@@ -14,7 +14,7 @@
 void game_over();
 void display_flash_gameover();
 void main_menu();
-int customRandom();
+int customRandom(int gap);
 
 // Constants
 const int jumpSpeed = 3;
@@ -64,7 +64,7 @@ void game_loop(void)
   for (i = 0; i < obstacleAmount; i++)
   {
     obstacles[i].posX = obstacleStartX;
-    obstacles[i].posY = customRandom(obstacles[i].gap);
+    obstacles[i].posY = 2;
     obstacles[i].speedX = -3;
     obstacles[i].pointGiven = 0;
     obstacles[i].gap = 27;
@@ -187,7 +187,7 @@ void game_loop(void)
           // Updates on all resets
           obstacles[i].posX = 128;
           obstacles[i].pointGiven = 0;
-          obstacles[i].posY = customRandom();
+          obstacles[i].posY = customRandom(obstacles[i].gap);
 
           // Updates every 4th reset
           if (resetCounter % 4 == 0)

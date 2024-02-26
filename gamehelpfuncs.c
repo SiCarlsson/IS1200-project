@@ -49,16 +49,23 @@ void display_flash_gameover()
   display_update();
 }
 
-static uint32_t seedCounter = 1;
 
 // Pseudo-random number generator
+static uint32_t seedCounter = 1;
+
 int customRandom(int gap)
 {
   seedCounter = (seedCounter * 1664525U + 1013904223U) % UINT32_MAX;
 
-  // Generate a random value between 2 and 31
-  int randomValue = (seedCounter % 30) + 2;
+  // Generate a random value between 0 and 15 
+  int posY = (seedCounter % 32) / 2;
 
-  // Adjust for the gap and divide by 2
-  return randomValue / 2;
+  if (posY < 2)
+    posY = 2;
+  
+  // Corrects any 
+  while (posY + gap > 29)
+    posY -= 1;
+  
+  return posY;
 }
