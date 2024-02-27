@@ -323,8 +323,8 @@ char *itoaconv(int num)
 	static const char maxneg[] = "-2147483648";
 
 	itoa_buffer[ITOA_BUFSIZ - 1] = 0; /* Insert the end-of-string marker. */
-	sign = num;						  /* Save sign. */
-	if (num < 0 && num - 1 > 0)		  /* Check for most negative integer */
+	sign = num;												/* Save sign. */
+	if (num < 0 && num - 1 > 0)				/* Check for most negative integer */
 	{
 		for (i = 0; i < sizeof(maxneg); i += 1)
 			itoa_buffer[i + 1] = maxneg[i];
@@ -333,13 +333,13 @@ char *itoaconv(int num)
 	else
 	{
 		if (num < 0)
-			num = -num;		 /* Make number positive. */
+			num = -num;				 /* Make number positive. */
 		i = ITOA_BUFSIZ - 2; /* Location for first ASCII digit. */
 		do
 		{
 			itoa_buffer[i] = num % 10 + '0'; /* Insert next digit. */
-			num = num / 10;					 /* Remove digit from number. */
-			i -= 1;							 /* Move index to next empty position. */
+			num = num / 10;									 /* Remove digit from number. */
+			i -= 1;													 /* Move index to next empty position. */
 		} while (num > 0);
 		if (sign < 0)
 		{
@@ -365,7 +365,16 @@ void display_highscore()
 	{
 		char temp[16];
 		char dots[] = "..........";
-		char *name = scoreboardNames[counter];
+
+		// Selects name based on position
+		char *name;
+		if (counter == 0)
+			name = scoreboardName1;
+		else if (counter == 1)
+			name = scoreboardName2;
+		else if (counter == 2)
+			name = scoreboardName3;
+		
 		int score = scoreboard[counter];
 		char *scoreStr = itoaconv(score);
 

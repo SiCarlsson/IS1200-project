@@ -31,7 +31,11 @@ int obstacleSpacing = 64; // Display width / 2
 
 // HIGHSCORES
 int scoreboard[] = {0, 0, 0};
-char *scoreboardNames[] = {"NaN", "NaN", "NaN"};
+
+char scoreboardName1[] = "AaN";
+char scoreboardName2[] = "NaN";
+char scoreboardName3[] = "NaN";
+//char *scoreboardNames[] = {"NaN", "NaN", "NaN"};
 
 struct Bird
 {
@@ -285,7 +289,7 @@ void game_over()
     {
       char *initials = getInitials();
 
-      
+
       highscore = 1;
       break;
     }
