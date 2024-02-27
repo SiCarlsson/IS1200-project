@@ -323,8 +323,8 @@ char *itoaconv(int num)
 	static const char maxneg[] = "-2147483648";
 
 	itoa_buffer[ITOA_BUFSIZ - 1] = 0; /* Insert the end-of-string marker. */
-	sign = num;												/* Save sign. */
-	if (num < 0 && num - 1 > 0)				/* Check for most negative integer */
+	sign = num;						  /* Save sign. */
+	if (num < 0 && num - 1 > 0)		  /* Check for most negative integer */
 	{
 		for (i = 0; i < sizeof(maxneg); i += 1)
 			itoa_buffer[i + 1] = maxneg[i];
@@ -333,13 +333,13 @@ char *itoaconv(int num)
 	else
 	{
 		if (num < 0)
-			num = -num;				 /* Make number positive. */
+			num = -num;		 /* Make number positive. */
 		i = ITOA_BUFSIZ - 2; /* Location for first ASCII digit. */
 		do
 		{
 			itoa_buffer[i] = num % 10 + '0'; /* Insert next digit. */
-			num = num / 10;									 /* Remove digit from number. */
-			i -= 1;													 /* Move index to next empty position. */
+			num = num / 10;					 /* Remove digit from number. */
+			i -= 1;							 /* Move index to next empty position. */
 		} while (num > 0);
 		if (sign < 0)
 		{
@@ -350,4 +350,64 @@ char *itoaconv(int num)
 	/* Since the loop always sets the index i to the next empty position,
 	 * we must add 1 in order to return a pointer to the first occupied position. */
 	return (&itoa_buffer[i + 1]);
+}
+
+/*
+	Helper function to display all current highscores
+*/
+void display_highscore()
+{
+	display_clear();
+	display_string(0, "Highscores");
+
+	int counter = 0;
+	for (counter = 0; counter < 3; counter++)
+	{
+		char temp[16];
+		char dots[] = "..........";
+		char *name = scoreboardNames[counter];
+		int score = scoreboard[counter];
+		char *scoreStr = itoaconv(score);
+
+		int i = 0;
+		// Inserts name to temp
+		while (name[i] != '\0')
+		{
+			temp[i] = name[i];
+			i++;
+		}
+
+		// Inserts dots in between
+		int j = 0;
+		while (dots[j] != '\0')
+		{
+			temp[i] = dots[j];
+			i++;
+			j++;
+		}
+
+		// Inserts score to temp
+		// Find length of score (if less than 3, add zeros in front)
+		int scoreLength = 0;
+		while (scoreStr[scoreLength] != '\0')
+			scoreLength++;
+
+		// Add leading zeros based on score length
+		j = 0;
+		if (scoreLength == 1)
+		{
+			temp[i++] = '0';
+			temp[i++] = '0';
+		}
+
+		else if (scoreLength == 2)
+			temp[i++] = '0';
+
+		// Copy scoreStr to temp
+		while (scoreStr[j] != '\0')
+			temp[i++] = scoreStr[j++];
+
+		display_string(counter + 1, temp);
+	}
+	display_update();
 }

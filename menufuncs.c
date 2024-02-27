@@ -12,6 +12,7 @@ void instructions();
 void toGame();
 void highscores();
 char *itoaconv(int num);
+void display_highscore();
 
 /*
   MENU FUNCTIONS
@@ -30,17 +31,13 @@ void main_menu()
 
   // Converts input to int -> to use with switch-case
   if (btn4pressed())
-  {
     choice = 1;
-  }
+    
   else if (btn3pressed())
-  {
     choice = 2;
-  }
+
   else if (btn2pressed())
-  {
     choice = 3;
-  }
 
   switch (choice)
   {
@@ -125,56 +122,7 @@ void toGame()
 
 void highscores()
 {
-  // TESTING
-  char temp[16];
-  char dots[] = "..........";
-  char name[] = "ABC"; // TAKE INPUT
-  int score = 32;
-  char *scoreStr = itoaconv(score);
-
-  int i = 0;
-  // Inserts name to temp
-  while (name[i] != '\0')
-  {
-    temp[i] = name[i];
-    i++;
-  }
-
-  // Inserts dots in between
-  int j = 0;
-  while (dots[j] != '\0')
-  {
-    temp[i] = dots[j];
-    i++;
-    j++;
-  }
-
-  // Inserts score to temp
-  // Find length of score (if less than 3, add zeros in front)
-  int scoreLength = 0;
-  while (scoreStr[scoreLength] != '\0')
-    scoreLength++;
-
-  // Add leading zeros based on score length
-  j = 0;
-  if (scoreLength == 1)
-  {
-    temp[i++] = '0';
-    temp[i++] = '0';
-  }
-
-  else if (scoreLength == 2)
-    temp[i++] = '0';
-
-  // Copy scoreStr to temp
-  while (scoreStr[j] != '\0')
-    temp[i++] = scoreStr[j++];
-
-  // Display the formatted string
-  display_clear();
-  display_string(0, "Highscores");
-  display_string(1, temp);
-  display_update();
+  display_highscore();
 
   // Keeps the user on the instructions page until BTN4 is pressed
   while (1)

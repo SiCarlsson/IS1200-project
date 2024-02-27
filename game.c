@@ -14,6 +14,7 @@
 void game_over();
 void display_flash_gameover();
 void main_menu();
+void highscores();
 int customRandom(int gap);
 char *itoaconv(int num);
 int reachedHighscore(int currentScore, int highscores[]);
@@ -269,6 +270,7 @@ void game_loop(void)
 
 void game_over()
 {
+  int highscore = 0;
   // Loop forces all buttons to be disabled temporarily
   while (1)
   {
@@ -277,27 +279,13 @@ void game_over()
 
     display_flash_gameover();
 
-    quicksleep(6000000);
-    display_clear();
-
-    //char *scoreStr = itoaconv(score);
-
     if (reachedHighscore(PORTE, scoreboard) != 4)
     {
       char *initials = getInitials();
 
-      display_string(1, initials);
-      quicksleep(1000000);
+      highscore = 1;
+      break;
     }
-    else
-    {
-      display_string(0, "Idag var du");
-      display_string(1, "sämst");
-    }
-
-    display_update();
-    // TODO
-    // DISPLAY NAME AND SCORE
 
     quicksleep(6000000);
     display_string(3, "Continue: btn3");
@@ -315,5 +303,8 @@ void game_over()
 
     break;
   }
-  main_menu();
+  if (highscore)
+    highscores();
+  else
+    main_menu();
 }
