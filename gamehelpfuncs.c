@@ -4,6 +4,7 @@
 #include <stdint.h>  /* Declarations of uint_32 and the like */
 #include <stdlib.h>  /* Declarations to use Random generator */
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
+#include "mipslab.h"
 
 void display_flash_gameover()
 {
@@ -86,12 +87,12 @@ int reachedHighscore(int currentScore, int highscores[])
   return boardPosition;
 }
 
-const char alphabet[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                           'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-
 char *getInitials()
 {
   display_clear();
+
+  const char alphabet[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
   /*
     Logic to display current state properly
   */
@@ -142,10 +143,11 @@ char *getInitials()
 
     quicksleep(600000);
   }
-  
+
   // Clears screen
   display_clear();
   display_update();
 
   return selectedLetters;
 }
+

@@ -19,6 +19,7 @@ int customRandom(int gap);
 char *itoaconv(int num);
 int reachedHighscore(int currentScore, int highscores[]);
 void *getInitials();
+void swap_highscores(int pos, int score, char *name);
 
 // Constants
 const int jumpSpeed = 3;
@@ -279,10 +280,12 @@ void game_over()
 
     display_flash_gameover();
 
-    if (reachedHighscore(PORTE, scoreboard) != 4)
+    int highscorePos = reachedHighscore(PORTE, scoreboard);
+    if (highscorePos != 4)
     {
       char *initials = getInitials();
 
+      
       highscore = 1;
       break;
     }
