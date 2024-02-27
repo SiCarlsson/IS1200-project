@@ -85,3 +85,67 @@ int reachedHighscore(int currentScore, int highscores[])
 
   return boardPosition;
 }
+
+const char alphabet[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                           'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+char *getInitials()
+{
+  display_clear();
+  /*
+    Logic to display current state properly
+  */
+  // Counters
+  int alphabetCounter = 0;
+  int initialsCounter = 0;
+
+  // Shows selected letters
+  char selectedLetters[] = "...";
+  char showSelected[] = "         ";
+
+  while (initialsCounter < 3)
+  {
+    // Shows current letter
+    char currentLetter[] = "    <.....>";
+    currentLetter[7] = alphabet[alphabetCounter];
+
+    // Update selected letters
+    showSelected[6] = selectedLetters[0];
+    showSelected[7] = selectedLetters[1];
+    showSelected[8] = selectedLetters[2];
+
+    if (btn2pressed())
+    {
+      alphabetCounter++;
+
+      if (alphabetCounter > 25)
+        alphabetCounter = 0;
+    }
+    else if (btn4pressed())
+    {
+      alphabetCounter--;
+
+      if (alphabetCounter < 0)
+        alphabetCounter = 25;
+    }
+    else if (btn3pressed())
+    {
+      selectedLetters[initialsCounter] = alphabet[alphabetCounter];
+      initialsCounter++;
+    }
+
+    // Displays on screen
+    display_string(0, "Enter name:");
+    display_string(2, currentLetter);
+    display_string(3, showSelected);
+    display_update();
+
+    quicksleep(600000);
+  }
+  
+  // Clears screen
+  display_clear();
+  display_update();
+
+  return selectedLetters;
+}
