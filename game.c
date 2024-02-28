@@ -26,8 +26,8 @@ const int jumpSpeed = 3;
 const int moveSpeed = 2;
 const int counterLimit = 2; // Works as a delay-function to button inputs
 
-int obstacleAmount = 2;
-int obstacleSpacing = 64; // Display width / 2
+int obstacleAmount = 4;
+int obstacleSpacing = 32; // Display width / 4
 
 // HIGHSCORES
 int scoreboard[] = {0, 0, 0};
@@ -52,6 +52,7 @@ struct Obstacle
   int speedX;
   int pointGiven;
   int gap;
+  int visible;
 };
 
 void game_loop(void)
@@ -69,7 +70,7 @@ void game_loop(void)
 
   // Initialize obstacles
   struct Obstacle obstacles[obstacleAmount];
-  int obstacleStartX = 127;
+  int obstacleStartX = 128;
 
   // Sets the same values for all three obstacles
   int i;
@@ -80,10 +81,14 @@ void game_loop(void)
     obstacles[i].speedX = -3;
     obstacles[i].pointGiven = 0;
     obstacles[i].gap = 27;
-
     // Spread the obstacles
     obstacleStartX += obstacleSpacing;
   }
+
+  obstacles[0].visible = 1;
+  obstacles[1].visible = 0;
+  obstacles[2].visible = 1;
+  obstacles[3].visible = 0;
 
   // Variable keeps track of an active game, 0 if game is over
   int activeGame = 1;
@@ -126,7 +131,7 @@ void game_loop(void)
       int i; // Used for all loops in the game
       for (i = 0; i < obstacleAmount; i++)
       {
-        if (obstacles[i].posX < 128)
+        if (obstacles[i].posX < 128 && obstacles[i].visible == 1)
           display_obstacle(obstacles[i].posX, obstacles[i].posY, obstacles[i].gap);
       }
 
@@ -189,7 +194,7 @@ void game_loop(void)
       {
         if (bird.posX > obstacles[i].posX) // If the bird has passed the obstacle
         {
-          if (obstacles[i].pointGiven == 0)
+          if (obstacles[i].pointGiven == 0 && obstacles[i].visible == 1)
           {
             obstacles[i].pointGiven = 1;
             bird.score += 1;
@@ -220,6 +225,14 @@ void game_loop(void)
       }
 
       /*
+        Adds more obstacles during the game
+      */
+      if (PORTE == 10)
+        obstacles[1].visible = 1;
+      if (PORTE == 28)
+        obstacles[3].visible = 1;
+
+      /*
         Game Over Controllers
       */
       // If bird touches the ground the game is over
@@ -232,21 +245,24 @@ void game_loop(void)
       // Collission checker with obstacles
       for (i = 0; i < obstacleAmount; i++) // Obstacle width
       {
-        //
-        if (bird.posX >= obstacles[i].posX - 1 && bird.posX <= obstacles[i].posX + 1) // x-value matches with an obstacle
+        // Can only hit visible obstacles
+        if (obstacles[i].visible == 1)
         {
-          // Upper obstacle hit
-          if (bird.posY <= obstacles[i].posY + 1) // y-value matches with the upper obstacle
+          if (bird.posX >= obstacles[i].posX - 1 && bird.posX <= obstacles[i].posX + 1) // x-value matches with an obstacle
           {
-            activeGame = 0;
-            break;
-          }
+            // Upper obstacle hit
+            if (bird.posY <= obstacles[i].posY + 1) // y-value matches with the upper obstacle
+            {
+              activeGame = 0;
+              break;
+            }
 
-          // Lower obstacle hit
-          if (bird.posY >= (obstacles[i].posY + obstacles[i].gap))
-          {
-            activeGame = 0;
-            break;
+            // Lower obstacle hit
+            if (bird.posY >= (obstacles[i].posY + obstacles[i].gap))
+            {
+              activeGame = 0;
+              break;
+            }
           }
         }
       }
@@ -286,7 +302,7 @@ void game_over()
     int highscorePos = reachedHighscore(PORTE, scoreboard);
     if (highscorePos != 4)
     {
-      //char *initials = getInitials();
+      // char *initials = getInitials();
       updateHighscore(highscorePos, PORTE, getInitials());
 
       highscore = 1;
