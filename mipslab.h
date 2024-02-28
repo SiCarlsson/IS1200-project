@@ -2,8 +2,9 @@
    Header file for all labs.
    This file written 2015 by F Lundevall
    Some parts are original code written by Axel Isaksson
+   modified 2024 by S Carlsson and E Lindblom
 
-   Latest update 2015-08-28 by F Lundevall
+   Latest update 2024-02-28 by S Carlsson and E Lindblom
 
    For copyright and licensing, see file COPYING */
 

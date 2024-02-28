@@ -6,6 +6,13 @@
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 #include "mipslab.h"
 
+/*
+  This file contains functions to help declutter game.c
+*/
+
+/*
+  Function to make the game over animation
+*/
 void display_flash_gameover()
 {
   int timeoutcount = 0;
@@ -50,6 +57,9 @@ void display_flash_gameover()
   display_update();
 }
 
+/*
+  Random number generator
+*/
 // Pseudo-random number generator
 static uint32_t seedCounter = 1;
 
@@ -57,18 +67,20 @@ int customRandom(int gap)
 {
   seedCounter = (seedCounter * 1664525U + 1013904223U) % UINT32_MAX;
 
-  // Generate a random value between 0 and 15
+  // Generate a random value between 0 and 15 based on seedCounter
   int posY = (seedCounter % 32) / 2;
 
+  // The upper obstacle can never be smaller than 2 pixels
   if (posY < 2)
     posY = 2;
 
-  // Corrects any
+  // The lower obstacle can never be smaller than 2 pixels
   while (posY + gap > 29)
     posY -= 1;
 
   return posY;
 }
+
 
 int reachedHighscore(int currentScore, int highscores[])
 {

@@ -55,6 +55,10 @@ struct Obstacle
   int visible;
 };
 
+
+/*
+  Function contains the actual game logic
+*/
 void game_loop(void)
 {
   /*
@@ -229,7 +233,7 @@ void game_loop(void)
       */
       if (PORTE == 10)
         obstacles[1].visible = 1;
-      if (PORTE == 28)
+      if (PORTE == 29)
         obstacles[3].visible = 1;
 
       /*
@@ -288,6 +292,9 @@ void game_loop(void)
   game_over();
 }
 
+/*
+  Function handels game over logic
+*/
 void game_over()
 {
   int highscore = 0;

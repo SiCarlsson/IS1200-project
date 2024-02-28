@@ -1,12 +1,19 @@
 /* mipslabfunc.c
 	 This file written 2015 by F Lundevall
 	 Some parts are original code written by Axel Isaksson
+	 modified 2024 by S Carlsson and E Lindblom
+
+	 Latest update 2024-02-27 by S Carlsson and E Lindblom
 
 	 For copyright and licensing, see file COPYING */
 
 #include <stdint.h>	 /* Declarations of uint_32 and the like */
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 #include "mipslab.h" /* Declatations for these labs */
+
+/*
+	This file handles everything regarding the display
+*/
 
 /* Declare a helper function which is local to this file */
 static void num32asc(char *s, int);
@@ -163,6 +170,9 @@ void display_clear()
 	display_string(3, "");
 }
 
+/*
+	Helper function to clear the displaybuffer
+*/
 void display_clear_pixels()
 {
 	int byte = 0;
@@ -189,37 +199,42 @@ void display_string_array(char *stringArray[], int arraySize)
 	display_update();
 }
 
+/*
+	Helper function to draw a pixel based on a x and y value
+*/
 void display_pixel(int xPos, int yPos)
 {
 	// Failsafe, pixel cannot be outside screen
 	if (xPos < 0 || xPos > 128 || yPos < 0 || yPos > 32)
 		return;
 
-	int yByte;
+	int twoToPowerY;
 
 	if (yPos >= 24 && yPos < 32)
 	{
-		yByte = twoToPower(yPos - (displayPageH * 3));
-		displayBuffer[xPos + (displayW * 3)] &= (~yByte);
+		twoToPowerY = twoToPower(yPos - (displayPageH * 3));
+		displayBuffer[xPos + (displayW * 3)] &= (~twoToPowerY); // Fill the buffer based on x and y coordinates (page 3)
 	}
 	if (yPos >= 16 && yPos < 24)
 	{
-		yByte = twoToPower(yPos - (displayPageH * 2));
-		displayBuffer[xPos + (displayW * 2)] &= (~yByte);
+		twoToPowerY = twoToPower(yPos - (displayPageH * 2));
+		displayBuffer[xPos + (displayW * 2)] &= (~twoToPowerY); // Fill the buffer based on x and y coordinates (page 2)
 	}
 	if (yPos >= 8 && yPos < 16)
 	{
-		yByte = twoToPower(yPos - displayPageH);
-		displayBuffer[xPos + displayW] &= (~yByte);
+		twoToPowerY = twoToPower(yPos - displayPageH);
+		displayBuffer[xPos + displayW] &= (~twoToPowerY); // Fill the buffer based on x and y coordinates (page 1)
 	}
 	if (yPos < 8)
 	{
-		yByte = twoToPower(yPos);
-		displayBuffer[xPos] &= (~yByte);
+		twoToPowerY = twoToPower(yPos);
+		displayBuffer[xPos] &= (~twoToPowerY); // Fill the buffer based on x and y coordinates (page 0)
 	}
 }
 
-// Uses display_pixel() to draw a bird
+/*
+	Helper function to draw a bird based on x and y coordinates
+*/
 void display_bird(int xPos, int yPos)
 {
 	// (x-1, y+1) (x, y+1) (x+1, y+1)
@@ -240,7 +255,9 @@ void display_bird(int xPos, int yPos)
 	}
 }
 
-// Uses display_pixel to draw an obstacle
+/*
+	Helper function to draw an obstacle based in x and y coordinates and the gap size
+*/
 void display_obstacle(int xPos, int yPos, int gap)
 {
 	int i = 0;
@@ -374,7 +391,7 @@ void display_highscore()
 			name = scoreboardName2;
 		else if (counter == 2)
 			name = scoreboardName3;
-		
+
 		int score = scoreboard[counter];
 		char *scoreStr = itoaconv(score);
 

@@ -34,9 +34,3 @@ int btn2pressed(void)
 {
   return (getbtns() & 0x1);
 }
-
-// Special code for bt1 since it is a different bit than the other buttons
-int btn1pressed(void)
-{
-  return (PORTF & 0x2) >> 1;
-}
