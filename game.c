@@ -19,7 +19,7 @@ int customRandom(int gap);
 char *itoaconv(int num);
 int reachedHighscore(int currentScore, int highscores[]);
 void *getInitials();
-void swap_highscores(int pos, int score, char *name);
+void updateHighscore(int pos, int score, char *name);
 
 // Constants
 const int jumpSpeed = 3;
@@ -32,10 +32,9 @@ int obstacleSpacing = 64; // Display width / 2
 // HIGHSCORES
 int scoreboard[] = {0, 0, 0};
 
-char scoreboardName1[] = "AaN";
+char scoreboardName1[] = "NaN";
 char scoreboardName2[] = "NaN";
 char scoreboardName3[] = "NaN";
-//char *scoreboardNames[] = {"NaN", "NaN", "NaN"};
 
 struct Bird
 {
@@ -287,8 +286,8 @@ void game_over()
     int highscorePos = reachedHighscore(PORTE, scoreboard);
     if (highscorePos != 4)
     {
-      char *initials = getInitials();
-
+      //char *initials = getInitials();
+      updateHighscore(highscorePos, PORTE, getInitials());
 
       highscore = 1;
       break;
@@ -310,6 +309,9 @@ void game_over()
 
     break;
   }
+
+  PORTE = 0x0;
+
   if (highscore)
     highscores();
   else

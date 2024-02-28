@@ -52,7 +52,6 @@ extern int scoreboard[];
 extern char scoreboardName1[];
 extern char scoreboardName2[];
 extern char scoreboardName3[];
-//extern char *scoreboardNames[];
 
 /* Declare functions written by students.
    Note: Since we declare these functions here,

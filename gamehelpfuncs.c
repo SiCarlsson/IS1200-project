@@ -151,3 +151,51 @@ char *getInitials()
   return selectedLetters;
 }
 
+void updateHighscore(int pos, int score, char *name)
+{
+  int index = pos - 1;
+  // Third position
+  if (pos == 3)
+  {
+    scoreboard[index] = score;
+    scoreboardName3[0] = name[0];
+    scoreboardName3[1] = name[1];
+    scoreboardName3[2] = name[2];
+  }
+  // Second position
+  if (pos == 2)
+  {
+    // Move second place to third place
+    scoreboard[2] = scoreboard[1];
+    scoreboardName3[0] = scoreboardName2[0];
+    scoreboardName3[1] = scoreboardName2[1];
+    scoreboardName3[2] = scoreboardName2[2];
+
+    // Insert new value at second place
+    scoreboard[index] = score;
+    scoreboardName2[0] = name[0];
+    scoreboardName2[1] = name[1];
+    scoreboardName2[2] = name[2];
+  }
+  // First position
+  if (pos == 1)
+  {
+    // Move second place to third place
+    scoreboard[2] = scoreboard[1];
+    scoreboardName3[0] = scoreboardName2[0];
+    scoreboardName3[1] = scoreboardName2[1];
+    scoreboardName3[2] = scoreboardName2[2];
+
+    // Move first place to second place
+    scoreboard[1] = scoreboard[0];
+    scoreboardName2[0] = scoreboardName1[0];
+    scoreboardName2[1] = scoreboardName1[1];
+    scoreboardName2[2] = scoreboardName1[2];
+
+    // Insert new value at first place
+    scoreboard[index] = score;
+    scoreboardName1[0] = name[0];
+    scoreboardName1[1] = name[1];
+    scoreboardName1[2] = name[2];
+  }
+}
