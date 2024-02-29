@@ -8,6 +8,7 @@
 
 /*
   This file handles all logic of the actual game
+  S Carlsson and E Lindblom
 */
 
 // Declaration of functions
@@ -58,6 +59,7 @@ struct Obstacle
 
 /*
   Function contains the actual game logic
+  S Carlsson and E Lindblom
 */
 void game_loop(void)
 {
@@ -100,13 +102,13 @@ void game_loop(void)
   // Initialize score counter
   PORTE = 0x0;
 
-  // initialisera Timer 2 (Från labb3)
+  // initialize Timer 2 (From labb3)
   TMR2 = 0x0;
   T2CON = 0x70;
   int timeoutcount = 0;
 
   // 80 MHz = 80'000'000, Clock rate divider, Time out period
-  // Beräkning för att få ett värde in i 16-bitars format
+  // Calculation to get a value in 16-bit format
   PR2 = ((80000000 / 256) / 25);
   T2CONSET = 0x8000;
 
@@ -294,6 +296,7 @@ void game_loop(void)
 
 /*
   Function handels game over logic
+  E Lindblom
 */
 void game_over()
 {

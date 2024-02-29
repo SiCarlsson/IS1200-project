@@ -16,6 +16,7 @@ void display_highscore();
 
 /*
   MENU FUNCTIONS
+  S Carlsson
 */
 // Main menu
 void main_menu()
@@ -32,7 +33,7 @@ void main_menu()
   // Converts input to int -> to use with switch-case
   if (btn4pressed())
     choice = 1;
-    
+
   else if (btn3pressed())
     choice = 2;
 
@@ -63,6 +64,10 @@ void main_menu()
   }
 }
 
+/*
+  function for instruction pages
+  E Lindblom
+*/
 void instructions()
 {
   char *instructions1[] = {"Manual, p.1", "BTN4: Prev. page", "BTN3: Main menu", "BTN2: Next page"};
@@ -113,6 +118,10 @@ void instructions()
   }
 }
 
+/*
+  Function that prepares the game
+  E Lindblom
+*/
 void toGame()
 {
   display_clear();
@@ -120,6 +129,10 @@ void toGame()
   game_loop();
 }
 
+/*
+  function for highscore page
+  S Carlsson
+*/
 void highscores()
 {
   display_highscore();

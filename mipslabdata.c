@@ -145,8 +145,9 @@ const uint8_t const font[] = {
 };
 
 /*
-	En buffer för att kunna visa pixlar på skärmen
-	Använder maxvärdet 255 istället för 0 då funktionen display_image inverterar värdet
+	A buffer to show pixels on the screen
+	Uses the max value 255 instead of 0 since function display_image inverts the value
+	S Carlsson
 */
 uint8_t displayBuffer[] = {
 	/* page 1 */
@@ -192,6 +193,7 @@ uint8_t displayBuffer[] = {
 
 /*
 	Function to convert an int value to the value 2^(int)
+	E Lindblom
 */
 int twoToPower (int y) {
   int result = 1;

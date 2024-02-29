@@ -12,18 +12,19 @@
 
 /*
   Function to make the game over animation
+  S Carlsson
 */
 void display_flash_gameover()
 {
   int timeoutcount = 0;
   int flashes = 0;
 
-  // initialisera Timer 2 (Från labb3)
+  // initialize Timer 2 (From labb3)
   TMR2 = 0x0;
   T2CON = 0x70;
 
   // 80 MHz = 80'000'000, Clock rate divider, Time out period
-  // Beräkning för att få ett värde in i 16-bitars format
+  // Calculation to get a value in 16-bit format
   PR2 = ((80000000 / 256) / 10);
   T2CONSET = 0x8000;
 
@@ -59,6 +60,7 @@ void display_flash_gameover()
 
 /*
   Random number generator
+  E Lindblom
 */
 // Pseudo-random number generator
 static uint32_t seedCounter = 1;
@@ -81,7 +83,10 @@ int customRandom(int gap)
   return posY;
 }
 
-
+/*
+  function to see if user reached high score
+  S Carlsson
+*/
 int reachedHighscore(int currentScore, int highscores[])
 {
   int boardPosition = 4;
@@ -99,6 +104,10 @@ int reachedHighscore(int currentScore, int highscores[])
   return boardPosition;
 }
 
+/*
+  function to recieve user initials
+  E Lindblom
+*/
 char *getInitials()
 {
   display_clear();
@@ -163,6 +172,10 @@ char *getInitials()
   return selectedLetters;
 }
 
+/*
+  function to update the current high score list
+  S Carlsson
+*/
 void updateHighscore(int pos, int score, char *name)
 {
   int index = pos - 1;

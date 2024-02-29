@@ -6,6 +6,7 @@
 
 /*
   Functions to get the inputs of buttons and switches
+  E Lindblom
 */
 int getbtns(void)
 {
@@ -19,6 +20,7 @@ int getsw(void)
 
 /*
   Helper functions to check if a button is pressed
+  S Carlsson
 */
 int btn4pressed(void)
 {

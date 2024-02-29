@@ -161,6 +161,7 @@ void display_update(void)
 
 /*
 	Helper function to clear all strings of text on display
+	E Lindblom
 */
 void display_clear()
 {
@@ -172,6 +173,7 @@ void display_clear()
 
 /*
 	Helper function to clear the displaybuffer
+	S Carlsson
 */
 void display_clear_pixels()
 {
@@ -184,6 +186,7 @@ void display_clear_pixels()
 
 /*
 	Helper function to display four lines of text
+	E Lindblom
 */
 void display_string_array(char *stringArray[], int arraySize)
 {
@@ -201,6 +204,7 @@ void display_string_array(char *stringArray[], int arraySize)
 
 /*
 	Helper function to draw a pixel based on a x and y value
+	S Carlsson
 */
 void display_pixel(int xPos, int yPos)
 {
@@ -234,6 +238,7 @@ void display_pixel(int xPos, int yPos)
 
 /*
 	Helper function to draw a bird based on x and y coordinates
+	E Lindblom
 */
 void display_bird(int xPos, int yPos)
 {
@@ -257,6 +262,7 @@ void display_bird(int xPos, int yPos)
 
 /*
 	Helper function to draw an obstacle based in x and y coordinates and the gap size
+	E Lindblom
 */
 void display_obstacle(int xPos, int yPos, int gap)
 {
@@ -371,6 +377,7 @@ char *itoaconv(int num)
 
 /*
 	Helper function to display all current highscores
+	S Carlsson
 */
 void display_highscore()
 {

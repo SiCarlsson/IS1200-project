@@ -39,6 +39,7 @@ void display_debug(volatile int *const addr);
 /* Declare bitmap array containing font */
 extern const uint8_t const font[128 * 8];
 
+// S Carlsson
 /* Declare bitmap array for printing pixels */
 extern uint8_t displayBuffer[128 * 4];
 
@@ -48,7 +49,7 @@ extern const uint8_t const icon[128];
 /* Declare text buffer for display output */
 extern char textbuffer[4][16];
 
-// HIGHSCORES
+// HIGHSCORES, E Lindblom
 extern int scoreboard[];
 extern char scoreboardName1[];
 extern char scoreboardName2[];

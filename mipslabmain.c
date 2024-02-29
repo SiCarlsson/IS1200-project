@@ -60,7 +60,7 @@ is running at 80 MHz. Changed 2017, as recommended by Axel.
 
 	display_init();
 
-	// Endless loop - Game goes on forever
+	// Endless loop - Game goes on forever, E Lindblom
 	while (1)
 	{
 		// Starter menu - Moves to all other logic
