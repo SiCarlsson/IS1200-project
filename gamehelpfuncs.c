@@ -96,9 +96,6 @@ int reachedHighscore(int currentScore, int highscores[])
   {
     if (currentScore > highscores[i])
       boardPosition--;
-
-    else if (currentScore == highscores[i])
-      return boardPosition;
   }
 
   return boardPosition;
